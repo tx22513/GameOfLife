@@ -3,7 +3,6 @@ package gol
 import (
 	"fmt"
 	"os"
-	"sync"
 	"time"
 	"uk.ac.bris.cs/gameoflife/util"
 )
@@ -27,14 +26,11 @@ func distributor(p Params, c distributorChannels) {
 
 	ticker := time.NewTicker(time.Second * 2) //Event should be sent every 2s.
 	defer ticker.Stop()
-	var mu sync.Mutex
 	turn := 0
 	for turn < p.Turns {
 		select {
 		case <-ticker.C:
-			mu.Lock()
 			c.events <- AliveCellsCount{turn, countCell(world)}
-			mu.Unlock()
 		case key := <-c.keyPresses:
 			handleKeyPress(p, key, c, world, turn)
 
