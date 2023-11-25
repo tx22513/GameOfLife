@@ -43,7 +43,7 @@ func (g *GameOfLifeBroker) DivideWorld(world [][]uint8, parts int) []WorldPart {
 				Data:     world[startRow : endRow+1],
 			}
 			worldParts = append(worldParts, part)
-		} else if endRow == len(world) {
+		} else if endRow == len(world)-1 {
 			part := WorldPart{
 				StartRow: startRow,
 				EndRow:   endRow,

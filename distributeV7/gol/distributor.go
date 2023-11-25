@@ -25,8 +25,8 @@ type distributorChannels struct {
 func distributor(p Params, c distributorChannels) {
 
 	//connect to the server
-	client, err := rpc.Dial("tcp", "34.229.9.86:8030")
-	//client, err := rpc.Dial("tcp", "127.0.0.1:1234")
+	//client, err := rpc.Dial("tcp", "34.229.9.86:8030")
+	client, err := rpc.Dial("tcp", "127.0.0.1:8034")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -37,7 +37,7 @@ func distributor(p Params, c distributorChannels) {
 
 	request := stubs.Request{World: world, Params: convertParams(p)}
 	response := new(stubs.Response)
-	err = client.Call(stubs.LoadWorld, request, response)
+	err = client.Call(stubs.LoadWorldToBroker, request, response)
 
 	ticker := time.NewTicker(time.Second * 2) //Event should be sent every 2s.
 	defer ticker.Stop()
@@ -47,14 +47,14 @@ func distributor(p Params, c distributorChannels) {
 			case <-ticker.C:
 				req := stubs.Request{}
 				res := new(stubs.Response)
-				err = client.Call(stubs.SendCellNumber, req, res)
+				err = client.Call(stubs.AggregateCellNumbers, req, res)
 				c.events <- AliveCellsCount{res.Turn, res.Cellnum}
 
-			case key := <-c.keyPresses:
-				req := stubs.Request{}
-				res := new(stubs.Response)
-				err = client.Call(stubs.SendCurrentState, req, res)
-				handleKeyPress(p, key, c, res.World, res.Turn, client, req, res)
+				//case key := <-c.keyPresses:
+				//	req := stubs.Request{}
+				//	res := new(stubs.Response)
+				//	err = client.Call(stubs.SendCurrentState, req, res)
+				//	handleKeyPress(p, key, c, res.World, res.Turn, client, req, res)
 			}
 		}
 	}()
@@ -62,7 +62,8 @@ func distributor(p Params, c distributorChannels) {
 	//excute turns
 	req := stubs.Request{World: world, Params: convertParams(p)}
 	res := new(stubs.Response)
-	err = client.Call(stubs.Update, req, res)
+	err = client.Call(stubs.CallServerProcessWorld, req, res)
+
 	turn := res.Turn
 	world = res.World
 
