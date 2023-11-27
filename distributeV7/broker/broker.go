@@ -7,6 +7,7 @@ import (
 	"log"
 	"net"
 	"net/rpc"
+	"os"
 	"sync"
 	"uk.ac.bris.cs/gameoflife/goUtils"
 	"uk.ac.bris.cs/gameoflife/stubs"
@@ -32,10 +33,8 @@ type Broker struct {
 	serverAddrs []string
 }
 
-func (b *Broker) AggregateCellNumbers(req *stubs.Request, aggregatedRes *stubs.Response) error {
+func (b *Broker) ShutDownAllServers(req *stubs.Request, res *stubs.Response) error {
 	var wg sync.WaitGroup
-	totalCells := 0
-	latestTurn := 0
 
 	for _, addr := range b.serverAddrs {
 		wg.Add(1)
@@ -48,26 +47,171 @@ func (b *Broker) AggregateCellNumbers(req *stubs.Request, aggregatedRes *stubs.R
 			}
 			defer client.Close()
 
-			partRes := new(stubs.Response)
-			err = client.Call(stubs.SendCellNumber, &stubs.Request{}, partRes)
+			shutDownRes := new(stubs.Response)
+			err = client.Call(stubs.ShotDown, req, shutDownRes)
 			if err != nil {
-				log.Printf("Error calling SendCellNumber on server %s: %v", addr, err)
-			} else {
-				b.dataLock.Lock()
-				totalCells += partRes.Cellnum
-				if partRes.Turn > latestTurn {
-					latestTurn = partRes.Turn // 更新最新的回合数
-				}
-				b.dataLock.Unlock()
+				log.Printf("Error calling ShotDown on server %s: %v", addr, err)
+			}
+		}(addr)
+	}
+
+	wg.Wait()
+	os.Exit(0)
+	return nil
+
+}
+
+func (b *Broker) PauseAllServers(req *stubs.Request, res *stubs.Response) error {
+	var wg sync.WaitGroup
+
+	for _, addr := range b.serverAddrs {
+		wg.Add(1)
+		go func(addr string) {
+			defer wg.Done()
+			client, err := rpc.Dial("tcp", addr)
+			if err != nil {
+				log.Printf("Error connecting to server %s: %v", addr, err)
+				return
+			}
+			defer client.Close()
+
+			pauseRes := new(stubs.Response)
+			err = client.Call(stubs.Pause, req, pauseRes)
+			if err != nil {
+				log.Printf("Error calling Pause on server %s: %v", addr, err)
 			}
 		}(addr)
 	}
 
 	wg.Wait()
 
-	// 设置聚合的结果
-	aggregatedRes.Cellnum = totalCells
-	aggregatedRes.Turn = latestTurn // 使用最新的回合数
+	return nil
+}
+
+func (b *Broker) UnPauseAllServers(req *stubs.Request, res *stubs.Response) error {
+	var wg sync.WaitGroup
+
+	for _, addr := range b.serverAddrs {
+		wg.Add(1)
+		go func(addr string) {
+			defer wg.Done()
+			client, err := rpc.Dial("tcp", addr)
+			if err != nil {
+				log.Printf("Error connecting to server %s: %v", addr, err)
+				return
+			}
+			defer client.Close()
+
+			unpauseRes := new(stubs.Response)
+			err = client.Call(stubs.UnPause, req, unpauseRes)
+			if err != nil {
+				log.Printf("Error calling UnPause on server %s: %v", addr, err)
+			}
+		}(addr)
+	}
+
+	wg.Wait()
+
+	return nil
+}
+
+func (b *Broker) DisconnectAllServers(req *stubs.Request, res *stubs.Response) error {
+	var wg sync.WaitGroup
+
+	for _, addr := range b.serverAddrs {
+		wg.Add(1)
+		go func(addr string) {
+			defer wg.Done()
+			client, err := rpc.Dial("tcp", addr)
+			if err != nil {
+				log.Printf("Error connecting to server %s: %v", addr, err)
+				return
+			}
+			defer client.Close()
+
+			disconnectRes := new(stubs.Response)
+			err = client.Call(stubs.DisconnectClient, req, disconnectRes)
+			if err != nil {
+				log.Printf("Error calling DisconnectClient on server %s: %v", addr, err)
+			}
+		}(addr)
+	}
+
+	wg.Wait()
+
+	return nil
+}
+func (b *Broker) AggregateCurrentState(req *stubs.Request, aggregatedRes *stubs.Response) error {
+	var wg sync.WaitGroup
+	partialWorlds := make([][][]uint8, len(b.serverAddrs))
+	var firstTurn int  // 用于存储第一个成功响应的服务器的回合数
+	var turnFound bool // 用于标记是否已找到有效的回合数
+
+	for i, addr := range b.serverAddrs {
+		wg.Add(1)
+		go func(index int, addr string) {
+			defer wg.Done()
+			client, err := rpc.Dial("tcp", addr)
+			if err != nil {
+				log.Printf("Error connecting to server %s: %v", addr, err)
+				return
+			}
+			defer client.Close()
+
+			partRes := new(stubs.Response)
+			err = client.Call(stubs.SendCurrentState, req, partRes)
+			if err != nil {
+				log.Printf("Error calling SendCurrentState on server %s: %v", addr, err)
+				return
+			}
+
+			b.dataLock.Lock()
+			defer b.dataLock.Unlock()
+
+			partialWorlds[index] = partRes.World
+			if !turnFound && partRes.Turn > 0 {
+				firstTurn = partRes.Turn
+				turnFound = true
+			}
+		}(i, addr)
+	}
+
+	wg.Wait()
+
+	// Aggregate partial worlds
+	var completeWorld [][]uint8
+	for _, part := range partialWorlds {
+		if part != nil {
+			completeWorld = append(completeWorld, part...)
+		}
+	}
+
+	aggregatedRes.World = completeWorld
+	aggregatedRes.Turn = firstTurn // 设置聚合后的回合数
+
+	return nil
+}
+
+func (b *Broker) AggregateCellNumbers(req *stubs.Request, aggregatedRes *stubs.Response) error {
+	// 这里我们假设 serverAddr1 对应于处理整个世界状态的服务器
+	serverAddr := b.serverAddrs[0] // 使用第一个服务器地址
+	client, err := rpc.Dial("tcp", serverAddr)
+	if err != nil {
+		log.Printf("Error connecting to server %s: %v", serverAddr, err)
+		return err
+	}
+	defer client.Close()
+
+	partRes := new(stubs.Response)
+	err = client.Call(stubs.SendCellNumber, &stubs.Request{}, partRes)
+	if err != nil {
+		log.Printf("Error calling SendCellNumber on server %s: %v", serverAddr, err)
+		return err
+	}
+
+	// 使用服务器1返回的细胞数和回合数
+	aggregatedRes.Cellnum = partRes.Cellnum
+	aggregatedRes.Turn = partRes.Turn
 
 	return nil
 }

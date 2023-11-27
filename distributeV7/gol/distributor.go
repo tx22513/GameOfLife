@@ -50,11 +50,11 @@ func distributor(p Params, c distributorChannels) {
 				err = client.Call(stubs.AggregateCellNumbers, req, res)
 				c.events <- AliveCellsCount{res.Turn, res.Cellnum}
 
-				//case key := <-c.keyPresses:
-				//	req := stubs.Request{}
-				//	res := new(stubs.Response)
-				//	err = client.Call(stubs.SendCurrentState, req, res)
-				//	handleKeyPress(p, key, c, res.World, res.Turn, client, req, res)
+			case key := <-c.keyPresses:
+				req := stubs.Request{}
+				res := new(stubs.Response)
+				err = client.Call(stubs.AggregateCurrentState, req, res)
+				handleKeyPress(p, key, c, res.World, res.Turn, client, req, res)
 			}
 		}
 	}()
@@ -86,7 +86,7 @@ func handleKeyPress(p Params, key rune, c distributorChannels, world [][]uint8, 
 		c.events <- ImageOutputComplete{turn, fileName}
 		fmt.Println("Saved current state to PGM image.")
 	case 'q':
-		client.Call(stubs.DisconnectClient, req, res)
+		client.Call(stubs.DisconnectAllServers, req, res)
 		c.ioCommand <- ioCheckIdle
 		<-c.ioIdle
 		c.events <- StateChange{res.Turn, Quitting}
@@ -94,11 +94,11 @@ func handleKeyPress(p Params, key rune, c distributorChannels, world [][]uint8, 
 		os.Exit(0)
 	case 'p':
 		c.events <- StateChange{res.Turn, Paused}
-		client.Call(stubs.Pause, req, res)
+		client.Call(stubs.PauseAllServers, req, res)
 		for {
 			tem := <-c.keyPresses
 			if tem == 'p' {
-				client.Call(stubs.UnPause, req, res)
+				client.Call(stubs.UnPauseAllServers, req, res)
 				c.events <- StateChange{res.Turn, Executing}
 				break
 			}
@@ -115,7 +115,7 @@ func handleKeyPress(p Params, key rune, c distributorChannels, world [][]uint8, 
 		}
 
 		c.events <- ImageOutputComplete{res.Turn, fileName}
-		client.Call(stubs.ShotDown, req, res)
+		client.Call(stubs.ShutDownAllServers, req, res)
 		c.ioCommand <- ioCheckIdle
 		<-c.ioIdle
 		c.events <- StateChange{res.Turn, Quitting}

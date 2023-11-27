@@ -8,6 +8,7 @@ import (
 	"net/rpc"
 	"os"
 	"sync"
+	"time"
 	"uk.ac.bris.cs/gameoflife/goUtils"
 	"uk.ac.bris.cs/gameoflife/stubs"
 )
@@ -97,14 +98,22 @@ type Server struct {
 	startRow int
 	endRow   int
 
-	dataLock sync.Mutex
+	isPause    bool
+	isShotdown bool
+	dataLock   sync.Mutex
 }
 
 func (s *Server) ShotDown(req *stubs.Request, res *stubs.Response) (err error) {
-
+	done := make(chan bool, 1)
+	go func() {
+		fmt.Println("Server is shutting down...")
+		time.Sleep(time.Second) // 给足够的时间来处理任何待处理的请求
+		done <- true
+	}()
+	<-done
+	s.isShotdown = true
 	os.Exit(0)
-
-	return
+	return nil
 }
 
 func (s *Server) DisconnectClient(req *stubs.Request, res *stubs.Response) (err error) {
@@ -114,37 +123,34 @@ func (s *Server) DisconnectClient(req *stubs.Request, res *stubs.Response) (err 
 	return
 }
 
-// func (s *Server) UnPause(req *stubs.Request, res *stubs.Response) (err error) {
-//
-//		s.isPause = false
-//		fmt.Println("UnPause")
-//		return
-//	}
-//
-// func (s *Server) Pause(req *stubs.Request, res *stubs.Response) (err error) {
-//
-//		s.isPause = true
-//
-//		fmt.Println("Pause")
-//		return
-//	}
-//
-// func (s *Server) SendCurrentState(req *stubs.Request, res *stubs.Response) (err error) {
-//
-//		s.dataLock.Lock()
-//		res.World = s.world
-//		res.Turn = s.turn
-//		s.dataLock.Unlock()
-//		fmt.Println("Sending Current State...")
-//		return
-//	}
+func (s *Server) UnPause(req *stubs.Request, res *stubs.Response) (err error) {
+
+	s.isPause = false
+	fmt.Println("UnPause")
+	return
+}
+
+func (s *Server) Pause(req *stubs.Request, res *stubs.Response) (err error) {
+
+	s.isPause = true
+
+	fmt.Println("Pause")
+	return
+}
+
+func (s *Server) SendCurrentState(req *stubs.Request, res *stubs.Response) (err error) {
+
+	s.dataLock.Lock()
+	res.World = s.world
+	res.Turn = s.turn
+	s.dataLock.Unlock()
+	fmt.Println("Sending Current State...")
+	return
+}
 func (s *Server) SendCellNumber(req *stubs.Request, res *stubs.Response) (err error) {
 
-	partialWorld := extractRows(s.world, s.startRow, s.endRow)
-	num := countCell(partialWorld)
+	num := countCell(s.world)
 
-	fmt.Println(num)
-	fmt.Println(s.turn)
 	fmt.Println("Sending cell number for specified rows...")
 	res.Cellnum = num
 	res.Turn = s.turn
@@ -168,25 +174,25 @@ func (s *Server) Update(req *stubs.Request, res *stubs.Response) (err error) {
 	params := s.params
 	world := s.world
 
-	for s.turn < params.Turns {
+	for s.turn < params.Turns && !s.isShotdown {
 
-		//s.dataLock.Lock()
-		//if s.isPause {
-		//	s.dataLock.Unlock()
-		//	//wait isPause become false
-		//	for {
-		//		s.dataLock.Lock()
-		//		if !s.isPause {
-		//			s.dataLock.Unlock()
-		//			break
-		//		}
-		//		s.dataLock.Unlock()
-		//
-		//		time.Sleep(100 * time.Millisecond)
-		//	}
-		//} else {
-		//	s.dataLock.Unlock()
-		//}
+		s.dataLock.Lock()
+		if s.isPause {
+			s.dataLock.Unlock()
+			//wait isPause become false
+			for {
+				s.dataLock.Lock()
+				if !s.isPause {
+					s.dataLock.Unlock()
+					break
+				}
+				s.dataLock.Unlock()
+
+				time.Sleep(100 * time.Millisecond)
+			}
+		} else {
+			s.dataLock.Unlock()
+		}
 		world = calculateNextState(params, 0, params.ImageHeight, 0, params.ImageWidth, world)
 
 		s.turn++
