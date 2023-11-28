@@ -226,8 +226,8 @@ func countAliveNeighbors(x, y int, p Params, world [][]uint8) int {
 	for i := -1; i <= 1; i++ {
 		for j := -1; j <= 1; j++ {
 			if !(i == 0 && j == 0) {
-				neighborX := (x + j + p.ImageWidth) % p.ImageWidth
-				neighborY := (y + i + p.ImageHeight) % p.ImageHeight
+				neighborX := (x + j + p.ImageWidth) & (p.ImageWidth - 1)
+neighborY := (y + i + p.ImageHeight) & (p.ImageHeight - 1)
 				if world[neighborY][neighborX] != 0 {
 					alive++
 				}
