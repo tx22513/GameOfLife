@@ -139,7 +139,7 @@ func createNewPiece(height, width int) [][]uint8 {
 func finalizeGame(p Params, c distributorChannels, world [][]uint8) {
 	// TODO: Report the final state using FinalTurnCompleteEvent.
 	//output
-	fileName := fmt.Sprintf("output_%d", p.Turns)
+	fileName := fmt.Sprintf("%dx%dx%d", p.ImageHeight, p.ImageWidth, p.Turns)
 	c.ioCommand <- ioOutput
 	c.ioFilename <- fileName
 	for y := 0; y < p.ImageHeight; y++ {
@@ -227,7 +227,7 @@ func countAliveNeighbors(x, y int, p Params, world [][]uint8) int {
 		for j := -1; j <= 1; j++ {
 			if !(i == 0 && j == 0) {
 				neighborX := (x + j + p.ImageWidth) & (p.ImageWidth - 1)
-neighborY := (y + i + p.ImageHeight) & (p.ImageHeight - 1)
+				neighborY := (y + i + p.ImageHeight) & (p.ImageHeight - 1)
 				if world[neighborY][neighborX] != 0 {
 					alive++
 				}

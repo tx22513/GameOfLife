@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f3793dde-2c5c-48d3-a835-3cf0cdd82c7a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../distributeV8/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/broker/broker.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/check/alive/16x16.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/check/alive/512x512.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/check/alive/64x64.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/check/images/16x16x0.pgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/check/images/16x16x1.pgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/check/images/16x16x100.pgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/check/images/512x512x0.pgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/check/images/512x512x1.pgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/check/images/512x512x100.pgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/check/images/64x64x0.pgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/check/images/64x64x1.pgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/check/images/64x64x100.pgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/content/ReporGuidanceCollated.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/content/cw_diagrams-Distributed_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/content/cw_diagrams-Distributed_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/content/cw_diagrams-Distributed_3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/content/cw_diagrams-Distributed_4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/content/cw_diagrams-Distributed_5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/content/cw_diagrams-Distributed_6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/content/cw_diagrams-Extensions_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/content/cw_diagrams-Extensions_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/content/cw_diagrams-Parallel_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/content/cw_diagrams-Parallel_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/content/cw_diagrams-Parallel_3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/content/cw_diagrams-Parallel_4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/content/cw_diagrams-Parallel_5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/content/windows_sdl_native.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/count_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/go.mod" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/go.sum" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/goUtils/goUtils.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/gol/distributor.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/gol/event.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/gol/gol.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/gol/io.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/gol_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/images/128x128.pgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/images/16x16.pgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/images/256x256.pgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/images/512x512.pgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/images/64x64.pgm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/licenses/pgm-writer-license" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/main.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/pgm_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/sdl/loop.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/sdl/window.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/sdl_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/server/server.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/stubs/stubs.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/trace_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/util/cell.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/util/check.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../distributeV8/util/visualise.go" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" url="file:///usr/local/go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2YDFSxtCPMGCnXlBXIZcHWX6VbR" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/kenny&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;go.vgo&quot;
+  }
+}</component>
+  <component name="RunManager" selected="Go Build.go build uk.ac.bris.cs/gameoflife/server">
+    <configuration name="go build uk.ac.bris.cs/gameoflife/broker" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="distributeV2" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="uk.ac.bris.cs/gameoflife/broker" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/broker/broker.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build uk.ac.bris.cs/gameoflife/server" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="distributeV2" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="uk.ac.bris.cs/gameoflife/server" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/server/server.go" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build uk.ac.bris.cs/gameoflife/broker" />
+        <item itemvalue="Go Build.go build uk.ac.bris.cs/gameoflife/server" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VgoProject">
+    <environment>
+      <map>
+        <entry key="GOPROXY" value="https://goproxy.cn,direct" />
+      </map>
+    </environment>
+    <settings-migrated>true</settings-migrated>
+  </component>
+</project>
