@@ -313,8 +313,8 @@ func main() {
 	pAddr := flag.String("port", "8034", "Port to listen on")
 	//serverAddr1 := flag.String("serverAddr1", "127.0.0.1:8035", "Server address")
 	//serverAddr2 := flag.String("serverAddr2", "127.0.0.1:8036", "Server address")
-	serverAddr1 := flag.String("serverAddr1", "54.90.175.225:8080", "Server address")
-	serverAddr2 := flag.String("serverAddr2", "52.90.222.177:8079", "Server address")
+	serverAddr1 := flag.String("serverAddr1", "54.90.175.225:8036", "Server address")
+	serverAddr2 := flag.String("serverAddr2", "52.90.222.177:8035", "Server address")
 	flag.Parse()
 	flag.Parse()
 	worker := &Broker{

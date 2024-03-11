@@ -51,12 +51,12 @@ func distributor(p Params, c distributorChannels) {
 				err = client.Call(stubs.AggregateCellNumbers, req, res)
 				c.events <- AliveCellsCount{res.Turn, res.Cellnum}
 
-				//err = client.Call(stubs.AggregateCellFlip, req, res)
-				//for _, change := range res.StateChanges {
-				//	c.events <- CellFlipped{change.Turn, change.Cell}
-				//}
-				//
-				//c.events <- TurnComplete{res.Turn}
+				err = client.Call(stubs.AggregateCellFlip, req, res)
+				for _, change := range res.StateChanges {
+					c.events <- CellFlipped{change.Turn, change.Cell}
+				}
+
+				c.events <- TurnComplete{res.Turn}
 
 			case key := <-c.keyPresses:
 				req := stubs.Request{}
